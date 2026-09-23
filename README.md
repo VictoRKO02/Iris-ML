@@ -1,27 +1,31 @@
 # Iris ML
 
-Projeto de classificação de espécies de flores utilizando técnicas de Machine Learning.
+Projeto de Machine Learning para classificação de espécies de flores do conjunto de dados Iris a partir de características da sépala e da pétala.
 
-O objetivo é analisar o conjunto de dados Iris e construir modelos capazes de identificar a espécie de uma flor a partir de medidas da sépala e da pétala.
+## Objetivo
+
+O objetivo do projeto é aplicar um fluxo básico de aprendizado supervisionado, passando pela obtenção dos dados, análise exploratória, treinamento de diferentes algoritmos de classificação, avaliação dos resultados e utilização do melhor modelo para realizar novas previsões.
 
 ## Dataset
 
-O projeto utiliza o Iris Dataset, composto por 150 amostras distribuídas entre três espécies:
+Foi utilizado o conjunto de dados Iris disponibilizado pelo `scikit-learn`.
 
-- Iris setosa
-- Iris versicolor
-- Iris virginica
+A base possui 150 amostras divididas igualmente entre três espécies:
 
-Cada registro possui quatro atributos:
+- `setosa`
+- `versicolor`
+- `virginica`
 
-- comprimento da sépala
-- largura da sépala
-- comprimento da pétala
-- largura da pétala
+Cada amostra possui quatro características:
 
-Fonte original: UCI Machine Learning Repository.
+- comprimento da sépala;
+- largura da sépala;
+- comprimento da pétala;
+- largura da pétala.
 
-## Tecnologias
+O arquivo `src/download_data.py` carrega a base pelo `scikit-learn`, organiza os nomes das colunas e gera o arquivo `data/iris.csv`.
+
+## Tecnologias utilizadas
 
 - Python
 - Pandas
@@ -29,7 +33,7 @@ Fonte original: UCI Machine Learning Repository.
 - Scikit-learn
 - Joblib
 
-## Estrutura
+## Estrutura do projeto
 
 ```text
 iris-ml/
@@ -43,6 +47,7 @@ iris-ml/
 │   ├── model_comparison.csv
 │   └── petalas_por_especie.png
 ├── src/
+│   ├── download_data.py
 │   ├── exploration.py
 │   ├── predict.py
 │   └── train.py
@@ -51,28 +56,112 @@ iris-ml/
 └── requirements.txt
 ```
 
-## Etapas do projeto
+## Funcionamento
 
-1. Leitura e inspeção do conjunto de dados.
-2. Verificação de valores ausentes e distribuição das classes.
-3. Análise exploratória das variáveis.
-4. Separação dos dados em treino e teste.
-5. Treinamento de três algoritmos de classificação.
-6. Comparação das acurácias.
-7. Seleção e armazenamento do melhor modelo.
-8. Classificação de novas amostras.
+O projeto foi dividido em quatro etapas principais.
 
-## Modelos utilizados
+### 1. Obtenção dos dados
+
+Execute:
+
+```bash
+python src/download_data.py
+```
+
+O script utiliza `load_iris()` do `scikit-learn` e salva a base em:
+
+```text
+data/iris.csv
+```
+
+### 2. Análise exploratória
+
+Execute:
+
+```bash
+python src/exploration.py
+```
+
+Nesta etapa são verificados:
+
+- primeiras linhas da base;
+- tipos das variáveis;
+- valores ausentes;
+- distribuição das espécies;
+- estatísticas descritivas.
+
+Também são gerados gráficos na pasta `results/`.
+
+### 3. Treinamento e avaliação
+
+Execute:
+
+```bash
+python src/train.py
+```
+
+Os dados são separados em 80% para treinamento e 20% para teste, mantendo a proporção entre as três espécies.
 
 Foram comparados três algoritmos:
 
-- K-Nearest Neighbors
-- Decision Tree
-- Random Forest
+- K-Nearest Neighbors (KNN);
+- Decision Tree;
+- Random Forest.
 
-O conjunto de dados é dividido em 80% para treino e 20% para teste, utilizando divisão estratificada para manter a proporção das espécies.
+A avaliação utiliza acurácia, precision, recall, F1-score e matriz de confusão.
 
-## Como executar
+Na execução utilizada neste projeto, os resultados obtidos foram:
+
+| Modelo        | Acurácia |
+| ------------- | -------: |
+| KNN           |     100% |
+| Decision Tree |   93,33% |
+| Random Forest |      90% |
+
+Os resultados podem variar caso sejam alterados os parâmetros ou a forma de divisão dos dados.
+
+O modelo com melhor desempenho é salvo em:
+
+```text
+models/best_model.joblib
+```
+
+### 4. Previsão de novas amostras
+
+Após o treinamento, execute:
+
+```bash
+python src/predict.py
+```
+
+O programa solicitará quatro medidas, em centímetros:
+
+```text
+Comprimento da sépala
+Largura da sépala
+Comprimento da pétala
+Largura da pétala
+```
+
+Exemplo:
+
+```text
+5.1
+3.5
+1.4
+0.2
+```
+
+Para valores com esse perfil, o modelo tende a classificar a amostra como `setosa`.
+
+## Como executar o projeto
+
+Clone o repositório e entre na pasta:
+
+```bash
+git clone URL_DO_REPOSITORIO
+cd iris-ml
+```
 
 Crie um ambiente virtual:
 
@@ -98,39 +187,37 @@ Instale as dependências:
 pip install -r requirements.txt
 ```
 
-Execute a análise exploratória:
+Depois execute os scripts na seguinte ordem:
 
 ```bash
+python src/download_data.py
 python src/exploration.py
-```
-
-Treine e compare os modelos:
-
-```bash
 python src/train.py
-```
-
-Depois do treinamento, execute uma previsão:
-
-```bash
 python src/predict.py
 ```
 
-Informe as quatro medidas solicitadas pelo programa.
+## Resultados gerados
 
-## Exemplo
+A pasta `results/` contém:
 
-Uma amostra com valores:
+- distribuição das variáveis;
+- relação entre comprimento e largura das pétalas;
+- comparação de desempenho dos modelos;
+- matriz de confusão do modelo selecionado.
 
-```text
-Comprimento da sépala: 5.1
-Largura da sépala: 3.5
-Comprimento da pétala: 1.4
-Largura da pétala: 0.2
-```
+## Conceitos aplicados
 
-deve ser classificada como uma flor próxima ao padrão da espécie setosa.
+Durante o desenvolvimento foram aplicados conceitos de:
 
-## Objetivo acadêmico
+- análise exploratória de dados;
+- aprendizado supervisionado;
+- classificação;
+- divisão entre treino e teste;
+- comparação de algoritmos;
+- métricas de avaliação;
+- persistência de modelos;
+- inferência com novos dados.
 
-O projeto foi desenvolvido para aplicar conceitos fundamentais de aprendizado supervisionado, incluindo preparação de dados, classificação, comparação de algoritmos, avaliação de desempenho e uso de um modelo treinado para realizar novas previsões.
+## Autor
+
+Victor Mendes
